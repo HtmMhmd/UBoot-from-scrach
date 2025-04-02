@@ -7,13 +7,14 @@
 #define BOARD_NAME          "Generic Board"
 #define CPU_CLOCK_HZ        50000000    /* 50 MHz */
 #define RAM_START           0x60000000  /* QEMU vexpress-a9 RAM start */
-#define RAM_SIZE            0x40000000  /* 1 GB - QEMU vexpress-a9 has more RAM */
+/* Reduce RAM_SIZE to avoid integer overflow */
+#define RAM_SIZE            0x10000000  /* 256MB, down from whatever was causing overflow */
 
 /* Console configurations */
 /* QEMU vexpress-a9 PL011 UART0 address */
 #define UART_BASE           0x10009000
 #define UART_BAUD_RATE      115200
-#define MAX_CMD_LENGTH      64
+#define MAX_CMD_LENGTH      128
 #define MAX_ARGS            16
 
 /* Environment configurations */

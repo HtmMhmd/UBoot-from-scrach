@@ -19,23 +19,26 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gcc-arm-none-eabi qemu-system-arm
       
-      - name: Build U-Boot
-        run: make
+      - name: Build U-Boot with verbose output
+        run: make V=1
       
       - name: Upload U-Boot binary
         uses: actions/upload-artifact@v4
         with:
           name: u-boot-binary
           path: u-boot.bin
+        if: success()
       
       - name: Upload ELF file
         uses: actions/upload-artifact@v4
         with:
           name: u-boot-elf
           path: u-boot.elf
+        if: success()
           
       - name: Upload disassembly
         uses: actions/upload-artifact@v4
         with:
           name: u-boot-disassembly
           path: u-boot.dis
+        if: success()
