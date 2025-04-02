@@ -1,22 +1,25 @@
-/* ARM assembly startup code for QEMU compatibility */
-.section .startup, "ax"
+/* ARM Startup Code */
+.section .vector_table
 .global _start
 
 _start:
-    /* Setup stack pointer */
-    ldr sp, =0x67000000
+    /* Vector table */
+    b     reset_handler    /* Reset */
+    b     hang             /* Undefined instruction */
+    b     hang             /* Software interrupt */
+    b     hang             /* Prefetch abort */
+    b     hang             /* Data abort */
+    b     hang             /* Reserved */
+    b     hang             /* IRQ */
+    b     hang             /* FIQ */
 
-    /* Clear BSS section */
-    ldr r0, =_bss_start
-    ldr r1, =_bss_end
-    mov r2, #0
-1:
-    cmp r0, r1
-    strlt r2, [r0], #4
-    blt 1b
-
-    /* Jump to C code */
-    bl main
-
+reset_handler:
+    /* Set up stack pointer */
+    ldr   sp, =0x60100000  /* Use RAM address for stack */
+    
+    /* Call C code */
+    bl    main
+    
     /* Should not return, but if it does */
-    b .
+hang:
+    b     hang

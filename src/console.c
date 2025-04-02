@@ -20,6 +20,9 @@ void console_init(void)
 {
     /* Initialize UART hardware */
     board_uart_init();
+    
+    /* Send a test message to verify UART is working */
+    puts("\n\nUART initialized successfully\n");
 }
 
 void putc(char c)
