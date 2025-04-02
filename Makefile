@@ -11,26 +11,20 @@ HAS_ARM_COMPILER := $(shell which $(ARM_CC) 2>/dev/null)
 
 # Set appropriate toolchain and flags based on availability
 ifdef HAS_ARM_COMPILER
-	# Use ARM toolchain
-	CC = $(ARM_CC)
-	LD = $(ARM_LD)
-	OBJCOPY = $(ARM_OBJCOPY)
-	OBJDUMP = $(ARM_OBJDUMP)
-	
-	# ARM-specific flags - removed conflicting -march flag
-	ARCH_FLAGS = -mcpu=cortex-a9
-	$(info Using ARM cross-compiler)
+CC = $(ARM_CC)
+LD = $(ARM_LD)
+OBJCOPY = $(ARM_OBJCOPY)
+OBJDUMP = $(ARM_OBJDUMP)
+ARCH_FLAGS = -mcpu=cortex-a9
+$(info Using ARM cross-compiler)
 else
-	# Fall back to native compiler for educational build
-	CC = gcc
-	LD = ld
-	OBJCOPY = objcopy
-	OBJDUMP = objdump
-	
-	# Remove ARM-specific flags for native build
-	ARCH_FLAGS = 
-	$(info ARM cross-compiler not found, using native compiler (for educational purposes only))
-	$(info To install ARM toolchain: sudo apt install gcc-arm-none-eabi)
+CC = gcc
+LD = ld
+OBJCOPY = objcopy
+OBJDUMP = objdump
+ARCH_FLAGS = 
+$(info ARM cross-compiler not found, using native compiler (for educational purposes only))
+$(info To install ARM toolchain: sudo apt install gcc-arm-none-eabi)
 endif
 
 # Common flags for both toolchains
@@ -44,8 +38,7 @@ SRCS = src/main.c \
        board/generic/board.c
 
 ifdef HAS_ARM_COMPILER
-	# Add ARM assembly startup when using ARM compiler
-	ASM_SRCS = src/startup.S
+ASM_SRCS = src/startup.S
 endif
 
 OBJS = $(SRCS:.c=.o)
