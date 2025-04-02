@@ -1,0 +1,41 @@
+name: ARM Cross-Compilation
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Install ARM cross-compiler and dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi qemu-system-arm
+      
+      - name: Build U-Boot
+        run: make
+      
+      - name: Upload U-Boot binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: u-boot-binary
+          path: u-boot.bin
+      
+      - name: Upload ELF file
+        uses: actions/upload-artifact@v3
+        with:
+          name: u-boot-elf
+          path: u-boot.elf
+          
+      - name: Upload disassembly
+        uses: actions/upload-artifact@v3
+        with:
+          name: u-boot-disassembly
+          path: u-boot.dis
