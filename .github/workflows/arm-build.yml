@@ -23,19 +23,19 @@ jobs:
         run: make
       
       - name: Upload U-Boot binary
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: u-boot-binary
           path: u-boot.bin
       
       - name: Upload ELF file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: u-boot-elf
           path: u-boot.elf
           
       - name: Upload disassembly
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: u-boot-disassembly
           path: u-boot.dis
